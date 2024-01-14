@@ -22,25 +22,7 @@ exports.createMovie = async (req,res)=>{
         return res.status(400).send({message:"error while creating movie"})
     }
 }
-exports.addMovie = async (req,res)=>{
-    try{
-        const {body} = req;
-    const {title,genre,rating,streaming_link} = body;
-    
-    let alreadyMovie = await movie.findOne({title})
-    if(alreadyMovie){
-        return res.status(400).send({message:"movie already exist"})
-    }
-    const added = await movie.insertMany({title,genre,rating,streaming_link})
-    console.log(added)
-    return res.status(200).send({message:"movie added"})
 
-    }catch(err){
-        console.log(err)
-        return res.status(400).send({message:"error while adding movie"})
-
-    }
-}
 exports.getMovie = async (req,res)=>{
     try{
         const movies = await movie.find()
@@ -57,7 +39,7 @@ exports.searchMovie = async (req,res)=>{
         const filter = body
         const searchedMovie = await movie.find(filter)
         console.log(searchedMovie)
-        res.status(200).send({data:searchedMovie})
+        return res.status(200).send({data:searchedMovie})
     }catch(err){
         console.log(err)
         return res.status(400).send({message:"error in searching movies"})
@@ -93,7 +75,8 @@ exports.deleteMovie = async (req,res)=>{
     }
         const deleted = await movie.deleteOne(filter)
         console.log(deleted)
-        return res.status(200).send({message:"successfully deleted"})
+         return res.status(200).send({message:"successfully deleted"})
+        
     }catch(err){
         console.log(err)
         return res.status(200).send({message:"error while deleting"})
